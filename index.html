@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big & Beautiful VTU Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Lighter, more inviting background */
+        }
+        /* Custom scrollbar for transaction table */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #e2e8f0; /* bg-gray-200 */
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #94a3b8; /* bg-slate-400 */
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #64748b; /* bg-slate-600 */
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 sm:p-6 lg:p-10">
+
+    <div class="max-w-7xl mx-auto bg-white rounded-3xl shadow-2xl p-6 md:p-10 border border-gray-100">
+
+        <!-- Header Section -->
+        <header class="flex flex-col sm:flex-row items-center justify-between mb-10 pb-8 border-b border-gray-200">
+            <div class="flex items-center text-center sm:text-left mb-4 sm:mb-0">
+                <img src="https://placehold.co/60x60/AEC6EB/FFFFFF?text=JD" alt="User Avatar" class="w-16 h-16 rounded-full mr-4 shadow-md border-2 border-blue-300">
+                <div>
+                    <h1 class="text-4xl font-extrabold text-gray-800 mb-1">
+                        Hello, <span class="text-blue-600">John Doe</span>!
+                    </h1>
+                    <p class="text-lg text-gray-600">Your VTU journey starts here.</p>
+                </div>
+            </div>
+            <button class="bg-red-500 text-white px-7 py-3 rounded-xl shadow-lg hover:bg-red-600 transition-colors duration-200 font-semibold flex items-center transform hover:-translate-y-0.5">
+                <!-- Log Out Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="17 16 22 12 17 8"></polyline>
+                    <line x1="22" x2="10" y1="12" y2="12"></line>
+                </svg>
+                Logout
+            </button>
+        </header>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- Left Column (Wallet, Quick Stats, Quick Actions) -->
+            <div class="lg:col-span-2 space-y-8">
+
+                <!-- Wallet Balance Card -->
+                <section>
+                    <div class="bg-gradient-to-br from-blue-600 to-blue-800 text-white p-8 rounded-3xl shadow-xl flex flex-col sm:flex-row items-center justify-between relative overflow-hidden">
+                        <!-- Subtle background pattern -->
+                        <div class="absolute inset-0 opacity-10 pointer-events-none">
+                            <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                <defs>
+                                    <pattern id="pattern-circles" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+                                        <circle cx="5" cy="5" r="1" fill="rgba(255,255,255,0.2)"/>
+                                    </pattern>
+                                </defs>
+                                <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-circles)"/>
+                            </svg>
+                        </div>
+                        <div class="flex items-center mb-4 sm:mb-0 z-10">
+                            <!-- Wallet Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="mr-6 text-blue-200">
+                                <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h12a2 2 0 0 1 0 4H5a2 2 0 0 0 0 4h12a2 2 0 0 0 2-2v-3"></path>
+                                <path d="M22 7V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7Z"></path>
+                                <path d="M14 10h1"></path>
+                            </svg>
+                            <div>
+                                <p class="text-2xl font-medium opacity-90">Your Current Balance</p>
+                                <p id="wallet-balance" class="text-6xl font-extrabold mt-1 tracking-tight">₦0.00</p>
+                            </div>
+                        </div>
+                        <button class="bg-white text-blue-700 px-8 py-3 rounded-xl shadow-lg hover:bg-blue-100 transition-colors duration-200 font-bold flex items-center z-10 transform hover:-translate-y-0.5">
+                            <!-- Plus Circle Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                            </svg>
+                            Fund Wallet
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Quick Stats Section -->
+                <section>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Quick Stats</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                        <!-- Stat Card 1 -->
+                        <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100 flex items-center transform hover:scale-105 transition-transform duration-200">
+                            <div class="bg-blue-100 p-3 rounded-full mr-4 text-blue-600">
+                                <!-- Trending Up Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                                    <polyline points="16 7 22 7 22 13"></polyline>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Total Transactions</p>
+                                <p id="total-transactions" class="text-2xl font-bold text-gray-800">0</p>
+                            </div>
+                        </div>
+                        <!-- Stat Card 2 -->
+                        <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100 flex items-center transform hover:scale-105 transition-transform duration-200">
+                            <div class="bg-green-100 p-3 rounded-full mr-4 text-green-600">
+                                <!-- Wifi Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 20h.01"></path>
+                                    <path d="M2 8.82a15 15 0 0 1 20 0"></path>
+                                    <path d="M5 12.65a10 10 0 0 1 14 0"></path>
+                                    <path d="M8.5 16.48a5 5 0 0 1 7 0"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Data Purchased (GB)</p>
+                                <p id="data-purchased" class="text-2xl font-bold text-gray-800">0 GB</p>
+                            </div>
+                        </div>
+                        <!-- Stat Card 3 -->
+                        <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100 flex items-center transform hover:scale-105 transition-transform duration-200">
+                            <div class="bg-purple-100 p-3 rounded-full mr-4 text-purple-600">
+                                <!-- Check Circle Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <path d="M22 4L12 14.01l-3-3"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Successful Payments</p>
+                                <p id="successful-payments" class="text-2xl font-bold text-gray-800">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quick Actions Section -->
+                <section>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Quick Actions</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                        <!-- Action Card: Buy Data -->
+                        <a href="#" class="block bg-blue-50 rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow duration-200 transform hover:-translate-y-1 border border-blue-200 flex items-center flex-col text-center">
+                            <div class="bg-blue-600 p-4 rounded-full text-white mb-3 shadow-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 20h.01"></path>
+                                    <path d="M2 8.82a15 15 0 0 1 20 0"></path>
+                                    <path d="M5 12.65a10 10 0 0 1 14 0"></path>
+                                    <path d="M8.5 16.48a5 5 0 0 1 7 0"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800">Buy Data</h3>
+                            <p class="text-gray-600 text-sm mt-1">Get instant data bundles.</p>
+                        </a>
+
+                        <!-- Action Card: Buy Airtime -->
+                        <a href="#" class="block bg-green-50 rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow duration-200 transform hover:-translate-y-1 border border-green-200 flex items-center flex-col text-center">
+                            <div class="bg-green-600 p-4 rounded-full text-white mb-3 shadow-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800">Buy Airtime</h3>
+                            <p class="text-gray-600 text-sm mt-1">Top up your phone credit.</p>
+                        </a>
+
+                        <!-- Action Card: Pay Bills -->
+                        <a href="#" class="block bg-yellow-50 rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow duration-200 transform hover:-translate-y-1 border border-yellow-200 flex items-center flex-col text-center">
+                            <div class="bg-yellow-600 p-4 rounded-full text-white mb-3 shadow-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <line x1="10" y1="9" x2="10" y2="9"></line>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800">Pay Bills</h3>
+                            <p class="text-gray-600 text-sm mt-1">Settle electricity, TV, etc.</p>
+                        </a>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Right Column (Announcements, Recent Transactions) -->
+            <div class="lg:col-span-1 space-y-8">
+
+                <!-- Announcements/Tips Card -->
+                <section>
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                            <!-- Bell Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-blue-500">
+                                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                            </svg>
+                            Announcements
+                        </h3>
+                        <ul class="space-y-3 text-gray-700 text-sm">
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2">&bull;</span> New MTN data plans available! Check them out now.
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2">&bull;</span> System maintenance on July 10th, 2 AM - 4 AM WAT.
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2">&bull;</span> Refer a friend and earn bonus credit!
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Recent Transactions Section -->
+                <section>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Recent Transactions</h2>
+                    <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+                        <div class="overflow-x-auto custom-scrollbar">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Date
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Service
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Amount
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Status
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transaction-history" class="bg-white divide-y divide-gray-200">
+                                    <!-- Transaction rows will be injected here by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="p-4 text-center border-t border-gray-200">
+                            <button class="text-blue-600 hover:text-blue-800 font-semibold text-sm transition-colors duration-200">
+                                View All Transactions
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500 text-sm">
+            &copy; 2025 VTU Platform. All rights reserved.
+        </footer>
+
+    </div>
+
+    <script>
+        // Simulated data
+        let walletBalance = 12500.50; // Example balance
+        let totalTransactions = 45;
+        let dataPurchasedGB = 120;
+        let successfulPayments = 42;
+
+        const recentTransactions = [
+            { date: '2025-07-06', service: 'MTN 2GB Data', amount: 500.00, status: 'Completed' },
+            { date: '2025-07-05', service: 'Airtel Airtime', amount: 1000.00, status: 'Completed' },
+            { date: '2025-07-04', service: 'DSTV Premium', amount: 18400.00, status: 'Completed' },
+            { date: '2025-07-03', service: 'Glo 1GB Data', amount: 250.00, status: 'Completed' },
+            { date: '2025-07-02', service: 'Electricity Token', amount: 5000.00, status: 'Pending' },
+            { date: '2025-07-01', service: '9mobile 5GB Data', amount: 1100.00, status: 'Completed' },
+            { date: '2025-06-30', service: 'WAEC Pin', amount: 4500.00, status: 'Failed' },
+        ];
+
+        // DOM elements
+        const walletBalanceDisplay = document.getElementById('wallet-balance');
+        const totalTransactionsDisplay = document.getElementById('total-transactions');
+        const dataPurchasedDisplay = document.getElementById('data-purchased');
+        const successfulPaymentsDisplay = document.getElementById('successful-payments');
+        const transactionHistoryTable = document.getElementById('transaction-history');
+
+        // --- Utility Functions ---
+
+        function formatCurrency(amount) {
+            return `₦${amount.toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
+
+        function updateWalletDisplay() {
+            walletBalanceDisplay.textContent = formatCurrency(walletBalance);
+        }
+
+        function updateQuickStats() {
+            totalTransactionsDisplay.textContent = totalTransactions;
+            dataPurchasedDisplay.textContent = `${dataPurchasedGB} GB`;
+            successfulPaymentsDisplay.textContent = successfulPayments;
+        }
+
+        function renderTransactionHistory() {
+            transactionHistoryTable.innerHTML = ''; // Clear existing rows
+
+            recentTransactions.forEach(transaction => {
+                const row = document.createElement('tr');
+                row.classList.add('hover:bg-gray-50');
+
+                let statusClass = '';
+                let statusIcon = '';
+                if (transaction.status === 'Completed') {
+                    statusClass = 'bg-green-100 text-green-800';
+                    statusIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-1"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><path d="M22 4L12 14.01l-3-3"></path></svg>`;
+                } else if (transaction.status === 'Pending') {
+                    statusClass = 'bg-yellow-100 text-yellow-800';
+                    statusIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-1"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`;
+                } else if (transaction.status === 'Failed') {
+                    statusClass = 'bg-red-100 text-red-800';
+                    statusIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-1"><circle cx="12" cy="12" r="10"></circle><path d="m15 9-6 6"></path><path d="m9 9 6 6"></path></svg>`;
+                }
+
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${transaction.date}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${transaction.service}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">${formatCurrency(transaction.amount)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
+                            ${statusIcon} ${transaction.status}
+                        </span>
+                    </td>
+                `;
+                transactionHistoryTable.appendChild(row);
+            });
+        }
+
+        // --- Event Listeners (Dummy) ---
+        document.querySelector('button.bg-red-500').addEventListener('click', () => {
+            // alert('Logging out...'); // In a real app, handle logout
+        });
+
+        document.querySelector('button.bg-white').addEventListener('click', () => {
+            // alert('Opening Fund Wallet page...'); // In a real app, navigate to fund wallet
+        });
+
+        document.querySelectorAll('.grid.grid-cols-1.sm\\:grid-cols-2.md\\:grid-cols-3.gap-6 a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                // alert(`Navigating to ${e.currentTarget.querySelector('h3').textContent} (simulated)`);
+            });
+        });
+
+        document.querySelector('.p-4.text-center button').addEventListener('click', () => {
+            // alert('Viewing all transactions...');
+        });
+
+        // --- Initial Setup ---
+        document.addEventListener('DOMContentLoaded', () => {
+            updateWalletDisplay();
+            updateQuickStats();
+            renderTransactionHistory();
+        });
+    </script>
+</body>
+</html>
